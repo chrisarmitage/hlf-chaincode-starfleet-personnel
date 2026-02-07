@@ -1,0 +1,6 @@
+[build]
+  cmd = "go build -buildvcs=false -o ./tmp/chaincode ."
+  bin = "./tmp/chaincode"
+  include_ext = ["go"]
+  exclude_dir = ["tmp"]
+  delay = 1000

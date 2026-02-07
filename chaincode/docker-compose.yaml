@@ -1,0 +1,18 @@
+networks:
+    fabric-net:
+        external: true
+
+services:
+
+  ccaas-dev:
+    build:
+      context: ..
+      dockerfile: chaincode/Dockerfile.dev
+    container_name: ccaas-dev
+    env_file:
+      - ./chaincode.env
+    volumes:
+      - ..:/go/src/chaincode
+    working_dir: /go/src/chaincode/chaincode
+    networks:
+      - fabric-net
