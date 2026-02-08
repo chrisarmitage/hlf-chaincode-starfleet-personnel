@@ -1,4 +1,4 @@
-package api
+package domain
 
 type Personnel struct {
 	PersonnelID string `json:"personnelID"`
@@ -7,3 +7,8 @@ type Personnel struct {
 	Campus      string `json:"campus"`
 	Status      string `json:"status"`
 }
+
+const (
+	RankCadet = "Cadet"
+	StatusActive = "active"
+)

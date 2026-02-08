@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/chrisarmitage/hlf-chaincode-starfleet-personnel/api"
+	"github.com/chrisarmitage/hlf-chaincode-starfleet-personnel/domain"
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
@@ -24,7 +24,7 @@ func personnelKey(personnelID string) string {
 	return fmt.Sprintf("%s:%s", DocTypePersonnel, personnelID)
 }
 
-func (c *PersonnelContract) GetPersonnel(ctx contractapi.TransactionContextInterface, personnelID string) (*api.Personnel, error) {
+func (c *PersonnelContract) GetPersonnel(ctx contractapi.TransactionContextInterface, personnelID string) (*domain.Personnel, error) {
 	key := personnelKey(personnelID)
 
 	personnelBytes, err := ctx.GetStub().GetState(key)
@@ -35,7 +35,7 @@ func (c *PersonnelContract) GetPersonnel(ctx contractapi.TransactionContextInter
 		return nil, fmt.Errorf("personnel with ID %s does not exist", personnelID)
 	}
 
-	var personnel *api.Personnel
+	var personnel *domain.Personnel
 	if err := json.Unmarshal(personnelBytes, &personnel); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal personnel data: %w", err)
 	}
