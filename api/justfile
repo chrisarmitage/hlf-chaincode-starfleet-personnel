@@ -1,0 +1,4 @@
+set dotenv-load
+
+run *args:
+    go run main.go {{args}}
