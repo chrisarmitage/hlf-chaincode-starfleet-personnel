@@ -32,6 +32,8 @@ func main() {
 		handleGetPersonnel(client, os.Args[2:])
 	case "enroll-cadet":
 		handleEnrollCadet(client, os.Args[2:])
+	case "complete-training":
+		handleCompleteTraining(client, os.Args[2:])
 	default:
 		fmt.Printf("Unknown command: %s\n\n", command)
 		printUsage()
@@ -43,9 +45,11 @@ func printUsage() {
 	fmt.Println("Usage:")
 	fmt.Println("  go run . get-personnel <personnel-id>")
 	fmt.Println("  go run . enroll-cadet <personnel-id> <name> <campus>")
+	fmt.Println("  go run . complete-training <record-id> <personnel-id> <campus> <training-code> <completed-at> <issued-by>")
 	fmt.Println("\nExamples:")
 	fmt.Println("  go run . get-personnel SF-001")
 	fmt.Println(`  go run . enroll-cadet SF-001 "Malcom Reynolds" Engineering`)
+	fmt.Println(`  go run . complete-training TR-001 SF-001 Engineering ENG-WARP-201 2024-06-01T12:00:00Z "Captain Janeway"`)
 }
 
 func handleGetPersonnel(client *personnelclient.PersonnelClient, args []string) {
@@ -92,4 +96,33 @@ func handleEnrollCadet(client *personnelclient.PersonnelClient, args []string) {
 	fmt.Printf("  Rank:   %s\n", personnel.Rank)
 	fmt.Printf("  Campus: %s\n", personnel.Campus)
 	fmt.Printf("  Status: %s\n", personnel.Status)
+}
+
+func handleCompleteTraining(client *personnelclient.PersonnelClient, args []string) {
+	if len(args) < 6 {
+		fmt.Println("Error: record-id, personnel-id, campus, training-code, completed-at, and issued-by are required")
+		fmt.Println(`Usage: go run . complete-training <record-id> <personnel-id> <campus> <training-code> <completed-at> <issued-by>`)
+		os.Exit(1)
+	}
+
+	recordID := args[0]
+	personnelID := args[1]
+	campus := args[2]
+	trainingCode := args[3]
+	completedAt := args[4]
+	issuedBy := args[5]
+
+	training, err := client.CompleteTraining(recordID, personnelID, campus, trainingCode, completedAt, issuedBy)
+	if err != nil {
+		log.Fatalf("failed to complete training: %v", err)
+	}
+
+	fmt.Printf("Training completed successfully:\n")
+	fmt.Printf("  Record ID:     %s\n", training.RecordID)
+	fmt.Printf("  Personnel ID:  %s\n", training.PersonnelID)
+	fmt.Printf("  Campus:        %s\n", training.Campus)
+	fmt.Printf("  Training Code: %s\n", training.TrainingCode)
+	fmt.Printf("  Completed At:  %s\n", training.CompletedAt)
+	fmt.Printf("  Issued By:     %s\n", training.IssuedBy)
+	fmt.Printf("  Status:        %s\n", training.Status)
 }

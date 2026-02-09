@@ -8,7 +8,20 @@ type Personnel struct {
 	Status      string `json:"status"`
 }
 
+type Training struct {
+	RecordID     string `json:"recordID"`
+	PersonnelID  string `json:"personnelID"`
+	Campus       string `json:"campus"`
+	TrainingCode string `json:"trainingCode"`
+	CompletedAt  string `json:"completedAt"`
+	IssuedBy     string `json:"issuedBy"`
+	Status       string `json:"status"`
+}
+
 const (
-	RankCadet = "Cadet"
-	StatusActive = "active"
+	PersonnelRankCadet = "Cadet"
+
+	PersonnelStatusActive = "active"
+
+	TrainingStatusCompleted = "completed"
 )
